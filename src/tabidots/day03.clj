@@ -40,8 +40,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw"))
        (first)
        (priority)))
 
-(defn part-1
-  []
+(defn part-1 []
   (apply + (map priority-of-rucksack rucksacks)))
 
 (defn find-badge
@@ -54,4 +53,5 @@ CrZsJsPPZsGzwwsLwLmpwMDw"))
   [input]
   (map find-badge (partition 3 input)))
 
-(badges rucks)
+(defn part-2 []
+  (apply + (map priority (badges rucksacks))))

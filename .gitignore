@@ -2,6 +2,9 @@ pom.xml
 pom.xml.asc
 *.jar
 *.class
+/.calva/
+/.clj-kondo/
+/.lsp/
 /lib/
 /classes/
 /target/
