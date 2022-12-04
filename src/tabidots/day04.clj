@@ -27,7 +27,7 @@
     (or (<= elf-a-min elf-b-min elf-a-max)
         (<= elf-a-min elf-b-max elf-a-max)
         (<= elf-b-min elf-a-min elf-b-max)
-        (<= elf-a-min elf-a-max elf-b-max)
+        (<= elf-b-min elf-a-max elf-b-max)
         nil)))
 
 (defn part-2 []
