@@ -41,9 +41,9 @@
 (defn move-crates
   "Executes one step of the instructions. Only CrateMover 9000 reverses the moved crates."
   [crates how-many origin destination model-num]
-  (let [payload (cond->>                (get crates origin)
-                     :always            (take how-many)
-                     (= model-num 9000) (reverse))] ; first-out, last-in
+  (let [payload (cond->> (get crates origin)
+                  :always            (take how-many)
+                  (= model-num 9000) (reverse))] ; first-out, last-in
     (-> crates
         (update destination conj payload)
         (update destination flatten)
