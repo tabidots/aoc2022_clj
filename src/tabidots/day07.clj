@@ -1,6 +1,7 @@
 (ns tabidots.day07
   (:gen-class)
-  (:require [clojure.java.io :as io]))
+  (:require [clojure.java.io :as io]
+            [clojure.string :as s]))
 
 (comment
  "Day 7: No Space Left On Device")
@@ -10,35 +11,31 @@
 
 (defn input-map
   [raw]
-  {:fs {} :commands raw :current [] :payload {}})
-
-(defn drop-last-vec
-  [coll]
-  (subvec coll 0 (dec (count coll))))
+  {:fs {} :commands raw :path [] :payload {}})
 
 (defn assemble-fs
-  [{:keys [fs commands current payload]}]
+  [{:keys [fs commands path payload]}]
   (if (nil? commands)
-    (update-in fs current merge payload)
+    (update-in fs path merge payload)
     (let [[this & those] commands
-          [a b c]        (re-seq #"\S+" this)
-          current'       (if (= b "cd")
-                           (if (= c "..")
-                             (drop-last-vec current)
-                             (conj current c))
-                           current)
+          [a b c]       (re-seq #"\S+" this)
+          path'         (if (= b "cd")
+                          (if (= c "..")
+                            (vec (butlast path))
+                            (conj path c))
+                          path)
           payload'      (cond
                           (= a "dir")        (assoc payload b {})
                           (re-find #"\d+" a) (assoc payload b (read-string a))
                           (= b "cd")         {}
                           :else              payload)
-          fs'           (if (and (not-empty current) (= b "cd"))
-                          (update-in fs current merge payload)
+          fs'           (if (and (not-empty path) (= b "cd"))
+                          (update-in fs path merge payload)
                           fs)]
       (recur
         {:fs       fs'
          :commands those
-         :current  current'
+         :path  path'
          :payload  payload'}))))
 
 (defn get-all-dirs
