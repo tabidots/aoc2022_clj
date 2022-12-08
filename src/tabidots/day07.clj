@@ -1,7 +1,6 @@
 (ns tabidots.day07
   (:gen-class)
-  (:require [clojure.java.io :as io]
-            [clojure.string :as s]))
+  (:require [clojure.java.io :as io]))
 
 (comment
  "Day 7: No Space Left On Device")
@@ -35,7 +34,7 @@
       (recur
         {:fs       fs'
          :commands those
-         :path  path'
+         :path     path'
          :payload  payload'}))))
 
 (defn get-all-dirs

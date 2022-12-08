@@ -1,7 +1,6 @@
 (ns tabidots.day06
   (:gen-class)
-  (:require [clojure.java.io :as io]
-            [clojure.string :as s]))
+  (:require [clojure.java.io :as io]))
 
 (comment
  "Day 6: Tuning Trouble")
