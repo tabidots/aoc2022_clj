@@ -20,7 +20,7 @@
           [a b c]       (re-seq #"\S+" this)
           path'         (if (= b "cd")
                           (if (= c "..")
-                            (vec (butlast path))
+                            (pop path)
                             (conj path c))
                           path)
           payload'      (cond
