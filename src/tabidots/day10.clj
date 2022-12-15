@@ -1,7 +1,7 @@
-(ns tabidots.day09
+(ns tabidots.day10
   (:gen-class)
   (:require [clojure.java.io :as io]))
-            
+
 (comment
  "Day 10: Cathode-Ray Tube")
 
