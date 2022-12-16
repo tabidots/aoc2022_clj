@@ -32,8 +32,8 @@
   "Sets the initial state of the cave based on a list of coordinates.
   Mode must be :abyss (Part 1) or :floor (Part 2)."
   ;; We can use the same bottom value for both parts. In Part 1, if y reaches
-  ;; the maximum y-value + 1, it will never stop. In Part 2, if y reaches that
-  ;; value, it must stop.
+  ;; the maximum y-value + 1, we know that it will never stop. In Part 2,
+  ;; if y reaches the maximum y-value + 1, it MUST stop.
   [input & {:keys [mode]}]
   (let [walls (mapcat draw-line input)]
     {:walls  (set walls)
@@ -47,13 +47,12 @@
     (if (= y bottom) (case mode
                        :abyss nil ; ← terminate as soon as first grain falls into the abyss
                        :floor (update state :walls conj position)) ; ← can't fall further
-      (let [down                  [x (inc y)]
-            down-left             [(dec x) (inc y)]
-            down-right            [(inc x) (inc y)]
-            [_ new-y :as new-pos] (->> [down down-left down-right]
-                                       ; ↓ don't consider occupied spaces
-                                       (remove (partial get walls))
-                                       (first))] ; ← order of priority is D, DL, DR
+      (let [down       [x (inc y)]
+            down-left  [(dec x) (inc y)]
+            down-right [(inc x) (inc y)]
+            new-pos    (->> [down down-left down-right ; ← don't consider occupied spaces
+                             (remove (partial get walls))
+                             (first)])] ; ← order of priority is D, DL, DR
         (if new-pos
           (recur new-pos)
           (update state :walls conj position))))))

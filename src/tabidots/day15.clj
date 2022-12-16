@@ -67,7 +67,7 @@
 (defn part-2
   [input bound]
   (let [[sensors _] (make-plot input)
-        untouched   (fn [[x y :as coords]]
+        untouched?  (fn [[x y :as coords]]
                       (and (<= 0 x bound)
                            (<= 0 y bound)
                            (every? #(> (manhattan coords (:position %))
@@ -75,8 +75,11 @@
                                    sensors)))]
     (first
       (for [perimeter (map outside-perimeter sensors)
-            :let [winner (some->> (filter untouched perimeter)
+            :let [winner (some->> (filter untouched? perimeter)
                                   (seq)
                                   (first))]
             :when winner]
         (tuning-frequency winner)))))
+
+; (part-2 puzzle-input 4000000)
+; 6-minute runtime. Ouch
