@@ -38,9 +38,7 @@
                 :goal?         -> test if current node meets a terminating condition
                 :neighbors-fn  -> given node, return all possible neighbors (not nec. existing or unseen)"
   [m config]
-  (let [{:keys [start-coords goal? neighbors-fn]} config
-        take-lower-cost (fn [old new]
-                          (if (< new old) new old))]
+  (let [{:keys [start-coords goal? neighbors-fn]} config]
     (loop [stack      (priority-map start-coords 0)
            closed-set {}]
       (let [[coords cost :as current] (peek stack)]
@@ -52,7 +50,7 @@
                                 (for [neighbor (neighbors-fn coords)
                                       :when (not (contains? closed-set neighbor))]
                                   {neighbor (inc cost)}))]
-            (recur (merge-with take-lower-cost (pop stack) neighbors)
+            (recur (merge-with min (pop stack) neighbors)
               (conj closed-set current))))))))
 
 (defn valid-neighbors

@@ -1,6 +1,7 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
-        org.clojure/data.priority-map {:mvn/version "1.0.0"}}
+        org.clojure/data.priority-map {:mvn/version "1.0.0"}
+        org.clojure/math.combinatorics {:mvn/version "0.1.6"}}
  :aliases
  {:run-m {:main-opts ["-m" "tabidots.aoc2022-clj"]}
   :run-x {:ns-default tabidots.aoc2022-clj
