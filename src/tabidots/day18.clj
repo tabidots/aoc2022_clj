@@ -18,14 +18,17 @@
     (for [line input]
       (map read-string (re-seq #"\d+" line)))))
 
+(defn neighbors
+  [[x y z]]
+  [[(dec x) y z] [(inc x) y z]
+   [x (dec y) z] [x (inc y) z]
+   [x y (dec z)] [x y (inc z)]])
+
 (defn surface-area
   [cubes]
-  (apply +
-    (for [[x y z] cubes]
-      (- 6
-         (count (keep cubes [[(dec x) y z] [(inc x) y z]
-                             [x (dec y) z] [x (inc y) z]
-                             [x y (dec z)] [x y (inc z)]]))))))
+  (reduce (fn [res cube]
+            (+ res (- 6 (count (keep cubes (neighbors cube))))))
+          0 cubes))
 
 (defn part-1 [input]
   (surface-area (parse input)))
@@ -44,11 +47,10 @@
       ,               {:outside closed}
       (empty? stack)  {:pockets closed}
       :else           (recur
-                        (->> (for [[x y z] stack
-                                   :when (not (closed [x y z]))]
-                               (remove cubes [[(dec x) y z] [(inc x) y z]
-                                              [x (dec y) z] [x (inc y) z]
-                                              [x y (dec z)] [x y (inc z)]]))
+                        (->> stack
+                             (keep (fn [cube]
+                                     (when-not (closed cube)
+                                       (remove cubes (neighbors cube)))))
                              (apply concat)
                              (set))
                         (into closed stack)))))
