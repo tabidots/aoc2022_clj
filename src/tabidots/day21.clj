@@ -31,9 +31,8 @@
       (if number number ; if there is a key :number, that's the answer
         ((resolve op) (calculate a jobs) (calculate b jobs))))))
 
-(defn part-1
-  []
-  (calculate "root" (monkey-jobs sample-input)))
+(defn part-1 []
+  (calculate "root" (monkey-jobs puzzle-input)))
 
 (defn solve-backward
   [chain]
@@ -52,19 +51,17 @@
 (defn trace-human
   [input]
   (let [jobs (assoc-in (monkey-jobs input) ["root" :op] '=)]
-    (loop [current "humn"
-           chain   '()]
+    (loop [current "humn" chain '()]
       (if (= current "root") (solve-backward chain)
-        (let [[next-monkey {:keys [a b] :as next-job}]
-              ,       (first (filter (fn [[k {:keys [a b]}]]
-                                       (or (= a current) (= b current)))
-                                     jobs))
-              next-op (cond-> next-job
-                        (not= a current)         (update :a calculate jobs)
-                        (and b (not= b current)) (update :b calculate jobs))]
-          (recur
-            next-monkey
-            (cons next-op chain)))))))
+        (let [[next-monkey {:keys [a b] :as job}]
+              ,        (first
+                         (filter (fn [[_ {:keys [a b]}]]
+                                   (or (= a current) (= b current)))
+                                 jobs))
+              next-job (cond-> job
+                         (not= a current)         (update :a calculate jobs)
+                         (and b (not= b current)) (update :b calculate jobs))]
+          (recur next-monkey (cons next-job chain)))))))
 
 (defn part-2 []
   (trace-human puzzle-input))
