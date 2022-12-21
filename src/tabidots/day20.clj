@@ -32,7 +32,7 @@
         (let [target              (first (filter #(= k (:order %)) file))
               {old-pos :position,
                value   :value}    target
-              new-pos            (loop-mod old-pos value)]
+              new-pos             (loop-mod old-pos value)]
           (recur
             (inc k)
             (->> file
@@ -64,7 +64,7 @@
        (mapv :value)
        (grove-coords-sum)))
 
-(defn part-2 []
+(defn part-2 [] ; 2m runtime
   (->> (unmixed puzzle-input :part-2? true)
        (iterate mix)
        (rest)
